@@ -27,7 +27,10 @@ public class JFT6Ex13{
         String repeated_blank = new String(new char[10]).replace("\0", " ");
         
         // Create Marathon
-        ArrayList<Runner> marathon = generateMarathon(1000, 42);
+        ArrayList<Runner> marathon = generateMarathon(10, 42);
+
+        
+
         Boolean active = true;
 
         while (active){
@@ -37,7 +40,7 @@ public class JFT6Ex13{
             System.out.println();
             
             System.out.println("Insira o comando: ");
-            System.out.println("Para editar o Marital Status, 'E'" + 
+            System.out.println("Para iniciar a maratona, 'I'" + 
                             "\npara Resumir o status da maratona 'R' e" + 
                             "\npara sair digite 'S'.");
             System.out.println();
@@ -47,31 +50,29 @@ public class JFT6Ex13{
             
             
             switch (inputStr) {
-                case "E":
+                case "I":
                     System.out.println(repeated + repeated + repeated);
-                    System.out.println(repeated_blank + "Editar o Status:");
+                    System.out.println(repeated_blank + "Iniciar a maratona:");
                     System.out.println(repeated + repeated + repeated);
                     System.out.println();
-                    System.out.println("O status marital atual é: " + getMaritalStatusDescription(p1.maritalStatus));
-                    System.out.println("Insira o novo Status: " + 
-                                    "\n'S' (Single); " + 
-                                    "\n'D' (Divorced);" +
-                                    "\n'M' (Married);" + 
-                                    "\n'W' (Widowed)");
-                    String status = scanner.next();
-                    char statusChar = status.charAt(0);
-                    
-                    p1.setPersonMaritalStatus(statusChar);
-                    System.out.println("Status Marital modificado com sucesso!");
-                    System.out.println("Novo status: " + getMaritalStatusDescription(p1.getPersonMaritalStatus()));
+                    System.out.println("Iniciada!!");
+                    System.out.println();
+                    for (Runner r : marathon){
+                        r.setStart(true);
+                        Thread thread1 = new Thread(r);
+                        thread1.start();
+                        System.out.println(r.showRunner());
+                    }
+                    MarathonStatusThread statusThread = new MarathonStatusThread(marathon);
+                    statusThread.start();
                     break;
                 case "R":
                     System.out.println(repeated + repeated + repeated);
-                    System.out.println(repeated_blank + "Status Marital atual:");
+                    System.out.println(repeated_blank + "Status dos atletas:");
                     System.out.println(repeated + repeated + repeated);
                     System.out.println();
                     //System.out.println("");
-                    System.out.println("Status marital: " + getMaritalStatusDescription(p1.maritalStatus));
+                    //System.out.println("Status marital: " + getMaritalStatusDescription(p1.maritalStatus));
                     System.out.println();
                     break;
                 case "S":
@@ -101,6 +102,145 @@ public class JFT6Ex13{
     }
 }
 
+class MarathonStatusThread extends Thread {
+    private ArrayList<Runner> marathon;
+
+    public MarathonStatusThread(ArrayList<Runner> marathon) {
+        this.marathon = marathon;
+    }
+
+    @Override
+    public void run() {
+        String repeated = new String(new char[20]).replace("\0", "*");
+        while (true) {
+            //System.out.println(repeated + "Status da Maratona" + repeated);
+            //System.out.println(repeated + repeated + repeated);
+            //System.out.println();
+
+            for (Runner r : marathon) {
+                if ((r.getRanStatus() < (5f + (5f * 0.05f)) && r.getRanStatus() > (5f - (5f * 0.05f))) && 
+                    r.recovered == false){
+                    r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                    
+                } else if (((r.getRanStatus() < (10f + (10f * 0.05f)) && r.getRanStatus() > (10f - (10f * 0.05f))) && 
+                    r.recovered == false)){
+                        r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                } else if (((r.getRanStatus() < (15f + (15f * 0.05f)) && r.getRanStatus() > (15f - (15f * 0.05f))) && 
+                    r.recovered == false)){
+                        r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                } else if (((r.getRanStatus() < (20f + (20f * 0.05f)) && r.getRanStatus() > (20f - (20f * 0.05f))) && 
+                    r.recovered == false)){
+                        r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                } else if (((r.getRanStatus() < (25f + (25f * 0.05f)) && r.getRanStatus() > (25f - (25f * 0.05f))) && 
+                    r.recovered == false)){
+                        r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                } else if (((r.getRanStatus() < (30f + (30f * 0.05f)) && r.getRanStatus() > (30f - (30f * 0.05f))) && 
+                    r.recovered == false)){
+                        r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                } else if (((r.getRanStatus() < (35f + (35f * 0.05f)) && r.getRanStatus() > (35f - (35f * 0.05f))) && 
+                    r.recovered == false)){
+                        r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                } else if (((r.getRanStatus() < (40f + (40f * 0.05f)) && r.getRanStatus() > (40f - (40f * 0.05f))) && 
+                    r.recovered == false)){
+                        r.setStamina(
+                        (r.skills.staminaRecovery * r.skills.maxStamina) + r.stamina
+                    );
+                    r.setRecovery(true);
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                    }
+                else {
+                    if (r.recovered){
+                        r.setRecovery(false);
+                    }
+                    System.out.println("Runner: " + r.getRunnerId() + " | " +
+                                    "Run: " + r.getRanStatus() + " | " +
+                                    "Stamina: " + r.stamina + " | " +
+                                    "Stamina Loss: " + r.skills.staminaLossRate + " | " +
+                                    "Recovered: " + (r.recovered ? "yes" : "no") + " | " +
+                                    "Running: " + (r.start ? "on" : "off"));
+                }
+            }
+
+            try {
+                Thread.sleep(1000); // Define o intervalo de atualização (em milissegundos)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.print("\033[H\033[2J"); // Limpa a tela
+            System.out.flush();
+        }
+    }
+}
+
 class Skills{
     Random rd = new Random();
     int id;
@@ -109,6 +249,7 @@ class Skills{
     float staminaLossRate;
     float staminaRecovery;
     float maxSpeed;
+    int maxStamina;
 
     public Skills(int id){
         this.id = id;
@@ -140,6 +281,7 @@ class Skills{
         while(qty < min){
             qty = rd.nextInt(max);
         }
+        this.maxStamina = qty;
         return qty;
     }
 
@@ -166,11 +308,15 @@ class Skills{
     }
 }
 
-class Runner{
+class Runner implements Runnable{
     Random random = new Random();
     int id = random.nextInt(100_000);
     float miles;
+    float run;
+    boolean start = false;
+    boolean recovered = false;
     Skills skills;
+    float stamina;
     int runnerSkillFunc;
 
     public Runner(float miles){
@@ -182,11 +328,11 @@ class Runner{
     }
 
     public float getRanStatus(){
-        return this.miles;
+        return this.run;
     }
 
-    public void setRanStatus(float miles){
-        this.miles = miles;
+    public void setRanStatus(float run){
+        this.run = run;
     }
 
     public void setRunnerSkillStd(int skill){
@@ -195,6 +341,77 @@ class Runner{
 
     public void setSkills(Skills skills){
         this.skills = skills;
+    }
+
+    public void setStart(boolean start){
+        this.start = start;
+        this.stamina = (float) this.skills.staminaAbs;
+    }
+
+    public void setRecovery(boolean recovered){
+        this.recovered = true;
+    }
+
+    public void setStamina(float stamina){
+        this.stamina = stamina;
+    }
+
+    @Override
+    public void run(){
+        this.setRanStatus(0f);
+        float ran = 0f;
+        int countSecs = 0;
+        while(this.start){
+            if (this.getRanStatus() <= this.miles & this.stamina > 0.1f){
+                float stepMilesByHour = this.skills.maxSpeed * 
+                    this.skills.staminaAbs * (this.skills.staminaPercentage - 
+                        (this.skills.staminaPercentage * this.skills.staminaLossRate)) / 
+                            this.skills.staminaAbs;
+                
+                float stepMilesBySec = stepMilesByHour / 3600;
+                ran += stepMilesBySec;
+                this.setRanStatus(ran);
+                this.setStamina((this.stamina - (this.stamina * this.skills.staminaLossRate)));
+                countSecs++;
+                System.out.print("\rRunner ID: " + this.id + " | " +
+                                        "Ran: " + this.getRanStatus() + " | " +
+                                        "Stamina: " + this.stamina + " | " +
+                                        "Time: " + countSecs + " | " +
+                                        "Started: " + (this.start ? "on" : "off") + " | ");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (this.getRanStatus() > this.miles){
+                    this.setStart(false);
+                    System.out.print("\rRunner ID: " + this.id + " | " +
+                                        "Ran: " + this.getRanStatus() + " | " +
+                                        "Stamina: " + this.stamina + " | " +
+                                        "Time: " + countSecs + " | " +
+                                        "Started: " + (this.start ? "on" : "off") + " | " +
+                                        "WINNER!!!");
+                } else if (this.stamina <= 0.1f){
+                    this.setStart(false);
+                    System.out.print("\rRunner ID: " + this.id + " | " +
+                                        "Ran: " + this.getRanStatus() + " | " +
+                                        "Stamina: " + this.stamina + " | " +
+                                        "Time: " + countSecs + " | " +
+                                        "Started: " + (this.start ? "on" : "off") + " | " +
+                                        "DIED!!!");
+                    break;
+                }
+            }
+
+        }
+    }
+
+    public String showRunner(){
+        return "\rRunner ID: " + this.id + " | " +
+                    "Ran: " + this.getRanStatus() + " | " +
+                    "Stamina: " + this.stamina + " | " +
+                    "Started: " + (this.start ? "on" : "off");
     }
 }
 
