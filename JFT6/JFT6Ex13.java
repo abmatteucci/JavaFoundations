@@ -77,7 +77,7 @@ public class JFT6Ex13{
                     break;
                 case "S":
                     active = false;
-                    System.out.println("Saindo do programa Marital Status.");
+                    System.out.println("Saindo do programa Marathon.");
                     System.out.println();
                     break;
 
