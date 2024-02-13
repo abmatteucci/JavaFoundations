@@ -25,14 +25,20 @@ Save the program as Exercise1.java.
 public class Exercise1 {
 
     public static void main(String[] args) {
-        
+        CardBusters cb = new CardBusters(2, 7);
+        int [] p1Cards = {10,6,8,9,7,12,7};
+        int [] p2Cards = {7,6,9,5,2,8,11};
+        cb.players.get(0).generateCardsFromArray(p1Cards);
+        cb.players.get(1).generateCardsFromArray(p2Cards);
+
+        cb.startGame();
     }
     
 }
 
 class Player {
     public String name;
-    public ArrayList<Card> cards;
+    public ArrayList<Card> cards = new ArrayList<>();
     public int score;
 
     public Player(String player_name){
@@ -60,7 +66,7 @@ class CardBusters {
 
     public int num_players;
     public int cards;
-    public ArrayList<Player> players;
+    public ArrayList<Player> players = new ArrayList<>();
 
     public CardBusters(int players_qtd, int cards_qty) {
     
@@ -107,20 +113,57 @@ class CardBusters {
                 if (round[j] > maxRoundValue) {
                     maxRoundValue = round[j];
                     indexOfRoundWinner = j;
+                } else if (round[j] == maxRoundValue) {
+                    indexOfRoundWinner = -1;
                 }
             }
             
-            this.players.get(indexOfRoundWinner).score++;
-            System.out.println("Round " + i + ": " + formattingString(round) + ". The winner of this round is: " + this.players.get(indexOfRoundWinner).name + ".");
+            if (indexOfRoundWinner != -1){
+                this.players.get(indexOfRoundWinner).score++;
+                System.out.println("Round " + i + ": " + formattingString(round) + "The winner of this round was: " + this.players.get(indexOfRoundWinner).name + ".");
+            } else {
+                System.out.println("Round " + i + ": " + formattingString(round) + "This round resulted in a tie.");
+            }
 
             
         }
+        int greaterScore = -1;
+        for (Player p : this.players){
+            if (p.score > greaterScore){
+                greaterScore = p.score;
+                indexOfWinner = this.players.indexOf(p);
+            } else if (p.score == greaterScore){
+                indexOfWinner = -1;
+            }
+        }
+
+        if (indexOfWinner != -1){
+            System.out.println("The Winner is " + this.players.get(indexOfWinner).name + " with " + this.players.get(indexOfWinner).score + "pts.");
+        } else {
+            System.out.println("This game resulted in a tie.");
+        }
+
+
     }
 
     private String formattingString(int [] round){
         String log = "";
         for (Player p : this.players){
-            log = p.name + " has show the card " + round[this.players.indexOf(p)] + "; ";
+            if (this.players.toArray().length > 2){
+                if (this.players.indexOf(p) < this.players.toArray().length -2) {
+                    log += p.name + " revealed the card " + round[this.players.indexOf(p)] + ", ";
+                } else if (this.players.indexOf(p) == this.players.toArray().length -2) {
+                    log += p.name + " revealed the card " + round[this.players.indexOf(p)] + " and ";
+                } else if (this.players.indexOf(p) == this.players.toArray().length -1) {
+                    log += p.name + " revealed the card " + round[this.players.indexOf(p)] + ". ";
+                }
+            } else {
+                if (this.players.indexOf(p) == this.players.toArray().length -2) {
+                    log += p.name + " revealed the card " + round[this.players.indexOf(p)] + " and ";
+                } else if (this.players.indexOf(p) == this.players.toArray().length -1) {
+                    log += p.name + " revealed the card " + round[this.players.indexOf(p)] + ". ";    
+                }
+            }
         }
         return log;
     }
