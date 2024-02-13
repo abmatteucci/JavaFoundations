@@ -30,8 +30,14 @@ public class Exercise1 {
         int [] p2Cards = {7,6,9,5,2,8,11};
         cb.players.get(0).generateCardsFromArray(p1Cards);
         cb.players.get(1).generateCardsFromArray(p2Cards);
-
+        String repeated = new String(new char[20]).replace("\0", "*");
+        String header = repeated + " CardBuster Game " + repeated;
+        System.out.println(header + "\n");
+        
         cb.startGame();
+
+        System.out.println("Goodbye!");
+
     }
     
 }
@@ -120,9 +126,9 @@ class CardBusters {
             
             if (indexOfRoundWinner != -1){
                 this.players.get(indexOfRoundWinner).score++;
-                System.out.println("Round " + i + ": " + formattingString(round) + "The winner of this round was: " + this.players.get(indexOfRoundWinner).name + ".");
+                System.out.println("Round " + i + ": " + formattingString(round) + "The winner of this round was: " + this.players.get(indexOfRoundWinner).name + ".\n");
             } else {
-                System.out.println("Round " + i + ": " + formattingString(round) + "This round resulted in a tie.");
+                System.out.println("Round " + i + ": " + formattingString(round) + "This round resulted in a tie.\n");
             }
 
             
@@ -138,9 +144,9 @@ class CardBusters {
         }
 
         if (indexOfWinner != -1){
-            System.out.println("The Winner is " + this.players.get(indexOfWinner).name + " with " + this.players.get(indexOfWinner).score + "pts.");
+            System.out.println("The Winner is " + this.players.get(indexOfWinner).name + " with " + this.players.get(indexOfWinner).score + "pts.\n");
         } else {
-            System.out.println("This game resulted in a tie.");
+            System.out.println("This game resulted in a tie.\n");
         }
 
 
