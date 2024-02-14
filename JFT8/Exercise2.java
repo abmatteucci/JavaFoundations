@@ -1,5 +1,7 @@
 package JFT8;
 
+import java.util.ArrayList;
+
 /*
  * You have saved up an amount of money, €500. Being a kind person, you like to help
 your friends by giving them small loans.
@@ -30,26 +32,60 @@ public class Exercise2 {
         // Loan Asked for
         int friendCount = 8;
         double[] loanRequests = {60.0, 20.0, 100.0, 80.0, 40.0, 300.0, 200.0, 100.0};
+        ArrayList<Double> unprocessedLoans = new ArrayList<>();
+        ArrayList<Log> loggin = new ArrayList<>();
 
-        // Processa cada pedido de empréstimo
+        System.out.println("Cash in the pot: " + fund.getBalance() + "\n");
+        // Processing loan requests
         for (int i = 0; i < friendCount; i++) {
+            
             double requestedAmount = loanRequests[i];
-            Friend friend = new Friend("Amigo " + Friend.getNextId(), requestedAmount);
+            Friend friend = new Friend("Friend " + Friend.getNextId(), requestedAmount);
 
-            // Tenta aprovar o empréstimo
+            // Try fully loan request
             boolean result = fund.tryLoan(friend);
 
             // Exibe o resultado para o amigo
             if (result) {
-                System.out.println("Amigo " + friend.getId() + ": Empréstimo de " + friend.getLoanRequest() + "€ aprovado.");
+                System.out.println("Friend " + friend.getId() + ": Loan amount requested €" + friend.getLoanRequest() + ". - Loan amount granted.");
+                System.out.println("Cash in the pot: " + fund.getBalance());
+                Log log = new Log(friend, requestedAmount, requestedAmount, result);
+                loggin.add(log);
+                System.out.println();
             } else {
-                System.out.println("Amigo " + friend.getId() + ": Empréstimo negado. Saldo insuficiente.");
-                Log.log("Empréstimo negado para amigo " + friend.getId() + ". Saldo insuficiente.");
+                if (fund.getBalance() > 0){
+                    
+                    System.out.println("Friend " + friend.getId() + ": Loan amount requested €" + friend.getLoanRequest());
+                    System.out.println("The exact loan request cannot be precessed in full (insufficent funds available).");
+                    System.out.println("However, we will give you what we can... €" + fund.getBalance());
+                    friend.setLoadRequest(fund.getBalance());
+                    fund.tryLoan(friend);
+                    Log log = new Log(friend, requestedAmount, fund.getBalance(), result);
+                    loggin.add(log);
+                    System.out.println();
+                    // System.out.println("Cash in the pot: " + fund.getBalance());
+                } else {
+                    unprocessedLoans.add(requestedAmount);
+                    Log log = new Log(friend, requestedAmount, fund.getBalance(), result);
+                    loggin.add(log);
+                }
+                // Log.log("Empréstimo negado para amigo " + friend.getId() + ". Saldo insuficiente.");
             }
         }
 
-        // Mostra o saldo final
-        System.out.println("\nSaldo final: " + fund.getBalance() + "€");
+        // Showing final balance
+        System.out.println("\nCash remaining in the pot: " + fund.getBalance());
+        System.out.println();
+        if (unprocessedLoans.size() > 0){
+            System.out.println("The following loan requests could not be facilitated:");
+            for (double up : unprocessedLoans){
+                System.out.println(up);
+            }
+        }
+
+        for (Log l : loggin){
+            l.logStr();
+        }
     }
 }
 
@@ -78,9 +114,20 @@ class PersonalFund {
 }
 
 class Log {
+    public Friend friend;
+    public double amountRequested;
+    public boolean granted;
+    public double amountGranted;
 
-    public static void log(String message) {
-        System.out.println("[LOG] " + message);
+    public Log(Friend friend, double amountRequested, double amountGranted, boolean granted){
+        this.friend = friend;
+        this.amountRequested = amountRequested;
+        this.amountGranted = amountGranted;
+        this.granted = granted;
+    }
+
+    public void logStr() {
+        System.out.println("[LOG] " + this.friend.getFriendName() + ", requested amount: " + this.amountRequested + ", granted amount: " + this.amountGranted + ", is granted: " + this.granted);
     }
 }
 
@@ -102,12 +149,20 @@ class Friend {
         return id;
     }
 
+    public String getFriendName(){
+        return name;
+    }
+
     public double getLoanRequest() {
         return loanRequest;
     }
 
     public static int getNextId() {
         return nextId;
+    }
+
+    public void setLoadRequest(double loanRequest){
+        this.loanRequest = loanRequest;
     }
 }
 
