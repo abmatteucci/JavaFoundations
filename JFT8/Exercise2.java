@@ -49,7 +49,7 @@ public class Exercise2 {
             if (result) {
                 System.out.println("Friend " + friend.getId() + ": Loan amount requested €" + friend.getLoanRequest() + ". - Loan amount granted.");
                 System.out.println("Cash in the pot: " + fund.getBalance());
-                Log log = new Log(friend, requestedAmount, requestedAmount, result);
+                Log log = new Log(friend, requestedAmount, requestedAmount, result, result);
                 loggin.add(log);
                 System.out.println();
             } else {
@@ -59,17 +59,17 @@ public class Exercise2 {
                     System.out.println("The exact loan request cannot be precessed in full (insufficent funds available).");
                     System.out.println("However, we will give you what we can... €" + fund.getBalance());
                     friend.setLoadRequest(fund.getBalance());
+                    Log log = new Log(friend, requestedAmount, fund.getBalance(), true, false);
                     fund.tryLoan(friend);
-                    Log log = new Log(friend, requestedAmount, fund.getBalance(), result);
                     loggin.add(log);
                     System.out.println();
                     // System.out.println("Cash in the pot: " + fund.getBalance());
                 } else {
                     unprocessedLoans.add(requestedAmount);
-                    Log log = new Log(friend, requestedAmount, fund.getBalance(), result);
+                    Log log = new Log(friend, requestedAmount, fund.getBalance(), result, false);
                     loggin.add(log);
                 }
-                // Log.log("Empréstimo negado para amigo " + friend.getId() + ". Saldo insuficiente.");
+                
             }
         }
 
@@ -83,6 +83,7 @@ public class Exercise2 {
             }
         }
 
+        System.out.println("\nLoggin\n");
         for (Log l : loggin){
             l.logStr();
         }
@@ -117,17 +118,19 @@ class Log {
     public Friend friend;
     public double amountRequested;
     public boolean granted;
+    public boolean fullGranted;
     public double amountGranted;
 
-    public Log(Friend friend, double amountRequested, double amountGranted, boolean granted){
+    public Log(Friend friend, double amountRequested, double amountGranted, boolean granted, boolean fullGranted){
         this.friend = friend;
         this.amountRequested = amountRequested;
         this.amountGranted = amountGranted;
         this.granted = granted;
+        this.fullGranted = fullGranted;
     }
 
     public void logStr() {
-        System.out.println("[LOG] " + this.friend.getFriendName() + ", requested amount: " + this.amountRequested + ", granted amount: " + this.amountGranted + ", is granted: " + this.granted);
+        System.out.println("[LOG] " + this.friend.getFriendName() + ", requested amount: " + this.amountRequested + ", granted amount: " + this.amountGranted + ", is granted: " + this.granted + ", is fully granted: " + this.fullGranted);
     }
 }
 
