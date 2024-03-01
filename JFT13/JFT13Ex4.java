@@ -26,7 +26,8 @@ public class JFT13Ex4 {
         
         Scanner scanner = new Scanner(System.in);
 
-        
+        Employee employee = new Employee();
+        employee.generateReport();
 
         
 
@@ -158,8 +159,10 @@ class Employee {
 
 
     public void generateReport(){
-        String decorateTitle = new String(new char[20]).replace("\0", "*");
-        String title = Centralizador.centralizarString("Teste", 60);
+        // String decorateTitle = new String(new char[20]).replace("\0", "*");
+        String title = Centralizador.centralizarString(" Teste ", 60);
+
+        System.out.println(title);
     }
 }
 
